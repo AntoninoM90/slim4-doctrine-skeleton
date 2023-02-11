@@ -1,4 +1,4 @@
-# Slim Framework 4 Skeleton Application
+# Slim Framework 4 Skeleton Application with Doctrine ORM 2
 
 [![Coverage Status](https://coveralls.io/repos/github/slimphp/Slim-Skeleton/badge.svg?branch=master)](https://coveralls.io/github/slimphp/Slim-Skeleton?branch=master)
 
