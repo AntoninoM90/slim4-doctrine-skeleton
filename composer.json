@@ -1,13 +1,16 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
+    "name": "antoninom90/slim4-doctrine-skeleton",
+    "description": "Slim Framework 4 Skeleton Application with Doctrine ORM 2",
     "keywords": [
+        "slim",
         "microframework",
         "rest",
+        "doctrine",
         "router",
         "psr7"
     ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "homepage": "http://github.com/AntoninoM90/slim4-doctrine-skeleton",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -19,6 +22,10 @@
             "name": "Pierre Berube",
             "email": "pierre@lgse.com",
             "homepage": "http://www.lgse.com/"
+        },
+        {
+            "name": "Antonino M. (@AntoninoM90)",
+            "homepage": "https://antoninom90.altervista.org/"
         }
     ],
     "require": {
