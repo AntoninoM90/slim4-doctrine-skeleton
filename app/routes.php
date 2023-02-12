@@ -10,9 +10,9 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 // Set the "id" pattern
-define('ID', '/{id:[0-9]+}');
+$id = '/{id:[0-9]+}';
 
-return function (App $app) {
+return function (App $app) use ($id) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -23,8 +23,8 @@ return function (App $app) {
         return $response;
     });
 
-    $app->group('/user', function (Group $group) {
+    $app->group('/user', function (Group $group) use($id) {
         $group->get('s', ListUsersAction::class)->setName('users-list');
-        $group->get(ID, ViewUserAction::class)->setName('user-view');
+        $group->get($id, ViewUserAction::class)->setName('user-view');
     });
 };

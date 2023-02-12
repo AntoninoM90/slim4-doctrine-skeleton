@@ -4,17 +4,67 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
-interface UserRepository
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+
+class UserRepository
 {
+    protected EntityManagerInterface $entityManager;
+
+    protected EntityRepository $repository;
+
+    public function __construct(
+        EntityManagerInterface $entityManager
+    ) {
+        $this->entityManager = $entityManager;  
+        $this->repository    = $this->entityManager->getRepository(User::class);
+    }
+
     /**
      * @return User[]
      */
-    public function findAll(): array;
+    public function findAllUsers(): array {
+        return $this->repository->findAll();
+    }
 
     /**
      * @param int $id
-     * @return User
+     * @return User|null
      * @throws UserNotFoundException
      */
-    public function findUserOfId(int $id): User;
+    public function findUserOfId(
+        int $id,
+        int $lockMode = null,
+        int $lockVersion = null
+    ): ?User {
+        return $this->repository->find($id, $lockMode, $lockVersion);
+    }
+
+    /**
+     * @param int $id
+     * @return User[]
+     * @throws UserNotFoundException
+     */
+    public function findUsersBy(
+        array $criteria,
+        ?array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ): array {
+        return $this->repository->findBy($criteria, $orderBy, $limit, $offset);
+    }
+
+    /**
+     * @param int $id
+     * @return User|null
+     * @throws UserNotFoundException
+     */
+    public function findOneUserBy(
+        array $criteria,
+        ?array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ): ?User {
+        return $this->repository->findOneBy($criteria, $orderBy);
+    }
 }

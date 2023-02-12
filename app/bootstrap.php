@@ -28,11 +28,6 @@ $settings($containerBuilder);
 $dependencies = require __DIR__ . '/dependencies.php';
 $dependencies($containerBuilder);
 
-
-// Set up repositories
-$repositories = require __DIR__ . '/repositories.php';
-$repositories($containerBuilder);
-
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
 

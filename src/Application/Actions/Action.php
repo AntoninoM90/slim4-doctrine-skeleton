@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
+use Doctrine\ORM\EntityManager;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -13,7 +15,11 @@ use Slim\Exception\HttpNotFoundException;
 
 abstract class Action
 {
+    protected ContainerInterface $container;
+
     protected LoggerInterface $logger;
+
+    protected EntityManager $entityManager;
 
     protected Request $request;
 
@@ -21,9 +27,16 @@ abstract class Action
 
     protected array $args;
 
-    public function __construct(LoggerInterface $logger)
+    /**
+     * The constructor.
+     * 
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
-        $this->logger = $logger;
+        $this->container     = $container;
+        $this->logger        = $container->get(LoggerInterface::class);
+        $this->entityManager = $container->get(EntityManager::class);
     }
 
     /**

@@ -4,16 +4,39 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 use JsonSerializable;
 
+/**
+ * @Entity()
+ * @Table(name="user")
+ */
 class User implements JsonSerializable
 {
-    private ?int $id;
+    /** 
+     * @Id
+     * @Column(name="id", type="integer", unique="true", nullable="true")
+     * @GeneratedValue("IDENTITY")
+     */
+    private int $id;
 
+    /**
+     * @Column(name="username", type="string", length="40", unique=true, nullable=false)
+     */
     private string $username;
 
+    /**
+     * @Column(name="first_name", type="string", length="40", unique=false, nullable=false)
+     */
     private string $firstName;
 
+    /**
+     * @Column(name="last_name", type="string", length="40", unique=false, nullable=false)
+     */
     private string $lastName;
 
     public function __construct(?int $id, string $username, string $firstName, string $lastName)
@@ -29,14 +52,38 @@ class User implements JsonSerializable
         return $this->id;
     }
 
+    public function setUsername(
+        string $username
+    ) : self {
+        $this->username = $username;
+
+        return $this;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
     }
 
+    public function setFirstName(
+        string $firstName
+    ) : self {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
+    }
+
+    public function setLastName(
+        string $lastName
+    ) : self {
+        $this->lastName = $lastName;
+
+        return $this;
     }
 
     public function getLastName(): string
@@ -48,10 +95,10 @@ class User implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
-            'username' => $this->username,
+            'id'        => $this->id,
+            'username'  => $this->username,
             'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
+            'lastName'  => $this->lastName,
         ];
     }
 }
