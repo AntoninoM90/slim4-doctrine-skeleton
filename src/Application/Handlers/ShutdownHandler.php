@@ -16,14 +16,22 @@ class ShutdownHandler
 
     private bool $displayErrorDetails;
 
+    private bool $logError;
+
+    private bool $logErrorDetails;
+
     public function __construct(
-        Request $request,
+        Request          $request,
         HttpErrorHandler $errorHandler,
-        bool $displayErrorDetails
+        bool             $displayErrorDetails,
+        bool             $logError,
+        bool             $logErrorDetails
     ) {
-        $this->request = $request;
-        $this->errorHandler = $errorHandler;
+        $this->request             = $request;
+        $this->errorHandler        = $errorHandler;
         $this->displayErrorDetails = $displayErrorDetails;
+        $this->logError            = $logError;
+        $this->logErrorDetails     = $logErrorDetails;
     }
 
     public function __invoke()
@@ -63,8 +71,8 @@ class ShutdownHandler
                 $this->request,
                 $exception,
                 $this->displayErrorDetails,
-                false,
-                false,
+                $this->logError,
+                $this->logErrorDetails,
             );
 
             $responseEmitter = new ResponseEmitter();
