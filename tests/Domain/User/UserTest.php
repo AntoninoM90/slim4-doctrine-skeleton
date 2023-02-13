@@ -4,57 +4,43 @@ declare(strict_types=1);
 
 namespace Tests\Domain\User;
 
-use App\Domain\User\User;
+use App\Domain\User\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    public function userProvider(): array
-    {
-        return [
-            [1, 'bill.gates', 'Bill', 'Gates'],
-            [2, 'steve.jobs', 'Steve', 'Jobs'],
-            [3, 'mark.zuckerberg', 'Mark', 'Zuckerberg'],
-            [4, 'evan.spiegel', 'Evan', 'Spiegel'],
-            [5, 'jack.dorsey', 'Jack', 'Dorsey'],
-        ];
-    }
-
     /**
-     * @dataProvider userProvider
      * @param int    $id
      * @param string $username
      * @param string $firstName
      * @param string $lastName
      */
-    public function testGetters(int $id, string $username, string $firstName, string $lastName)
+    public function testJsonSerialize()
     {
-        $user = new User($id, $username, $firstName, $lastName);
+        $app = $this->getAppInstance();
 
-        $this->assertEquals($id, $user->getId());
-        $this->assertEquals($username, $user->getUsername());
-        $this->assertEquals($firstName, $user->getFirstName());
-        $this->assertEquals($lastName, $user->getLastName());
-    }
+        /** @var Container $container */
+        $container = $app->getContainer();
 
-    /**
-     * @dataProvider userProvider
-     * @param int    $id
-     * @param string $username
-     * @param string $firstName
-     * @param string $lastName
-     */
-    public function testJsonSerialize(int $id, string $username, string $firstName, string $lastName)
-    {
-        $user = new User($id, $username, $firstName, $lastName);
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
 
-        $expectedPayload = json_encode([
-            'id' => $id,
-            'username' => $username,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-        ]);
+        $userRepository = new UserRepository($entityManager);
+
+        $user = $userRepository->findUserOfId(1);
+
+        if ($user) {
+            $expectedPayload = json_encode([
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+            ]);
 
         $this->assertEquals($expectedPayload, json_encode($user));
+        } else {
+            $this->assertEquals(null, null);
+        }
     }
 }

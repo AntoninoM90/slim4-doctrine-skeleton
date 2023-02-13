@@ -6,8 +6,7 @@ namespace Tests\Application\Actions\User;
 
 use App\Application\Actions\ActionPayload;
 use App\Domain\User\UserRepository;
-use App\Domain\User\User;
-use DI\Container;
+use Doctrine\ORM\EntityManager;
 use Tests\TestCase;
 
 class ListUserActionTest extends TestCase
@@ -19,21 +18,18 @@ class ListUserActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = new User(1, 'bill.gates', 'Bill', 'Gates');
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
 
-        $userRepositoryProphecy = $this->prophesize(UserRepository::class);
-        $userRepositoryProphecy
-            ->findAll()
-            ->willReturn([$user])
-            ->shouldBeCalledOnce();
+        $userRepository = new UserRepository($entityManager);
 
-        $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
+        $users = $userRepository->findAllUsers();
 
         $request = $this->createRequest('GET', '/users');
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
-        $expectedPayload = new ActionPayload(200, [$user]);
+        $expectedPayload = new ActionPayload(200, $users);
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);

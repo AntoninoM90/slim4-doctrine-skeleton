@@ -7,23 +7,23 @@ namespace Tests\Application\Actions;
 use App\Application\Actions\Action;
 use App\Application\Actions\ActionPayload;
 use DateTimeImmutable;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Log\LoggerInterface;
 use Tests\TestCase;
 
 class ActionTest extends TestCase
 {
+
     public function testActionSetsHttpCodeInRespond()
     {
         $app = $this->getAppInstance();
         $container = $app->getContainer();
-        $logger = $container->get(LoggerInterface::class);
 
-        $testAction = new class ($logger) extends Action {
+        $testAction = new class ($container) extends Action {
             public function __construct(
-                LoggerInterface $loggerInterface
+                ContainerInterface $container
             ) {
-                parent::__construct($loggerInterface);
+                parent::__construct($container);
             }
 
             public function action(): Response
@@ -50,13 +50,12 @@ class ActionTest extends TestCase
     {
         $app = $this->getAppInstance();
         $container = $app->getContainer();
-        $logger = $container->get(LoggerInterface::class);
 
-        $testAction = new class ($logger) extends Action {
+        $testAction = new class ($container) extends Action {
             public function __construct(
-                LoggerInterface $loggerInterface
+                ContainerInterface $container
             ) {
-                parent::__construct($loggerInterface);
+                parent::__construct($container);
             }
 
             public function action(): Response

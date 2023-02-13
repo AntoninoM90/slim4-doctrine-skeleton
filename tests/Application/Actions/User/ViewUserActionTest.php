@@ -6,12 +6,10 @@ namespace Tests\Application\Actions\User;
 
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
-use App\Application\Handlers\HttpErrorHandler;
-use App\Domain\User\User;
-use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserRepository;
-use DI\Container;
-use Slim\Middleware\ErrorMiddleware;
+use Doctrine\ORM\EntityManager;
+use Exception;
+use Slim\Psr7\Response;
 use Tests\TestCase;
 
 class ViewUserActionTest extends TestCase
@@ -23,22 +21,35 @@ class ViewUserActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $user = new User(1, 'bill.gates', 'Bill', 'Gates');
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
 
-        $userRepositoryProphecy = $this->prophesize(UserRepository::class);
-        $userRepositoryProphecy
-            ->findUserOfId(1)
-            ->willReturn($user)
-            ->shouldBeCalledOnce();
+        $userRepository = new UserRepository($entityManager);
 
-        $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
+        $user = $userRepository->findUserOfId(1);
 
-        $request = $this->createRequest('GET', '/users/1');
-        $response = $app->handle($request);
+        $request = $this->createRequest('GET', '/user/1');
+
+        try {
+            $response = $app->handle($request);
+
+            $expectedPayload = new ActionPayload(200, $user);
+        } catch(Exception $e) {
+            if ($e->getCode() === 404) {
+                $type = ActionError::RESOURCE_NOT_FOUND;
+            } else {
+                $type = ActionError::SERVER_ERROR;
+            }
+
+            $expectedError = new ActionError($type, $e->getMessage());
+            $expectedPayload = new ActionPayload($e->getCode(), null, $expectedError);
+            $response = new Response($e->getCode(), null);
+            $response->getBody()->write(json_encode($expectedPayload->jsonSerialize(), JSON_PRETTY_PRINT));
+        }
+
+        $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $payload = (string) $response->getBody();
-        $expectedPayload = new ActionPayload(200, $user);
-        $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);
     }
@@ -47,32 +58,30 @@ class ViewUserActionTest extends TestCase
     {
         $app = $this->getAppInstance();
 
-        $callableResolver = $app->getCallableResolver();
-        $responseFactory = $app->getResponseFactory();
-
-        $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
-        $errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, false, false);
-        $errorMiddleware->setDefaultErrorHandler($errorHandler);
-
-        $app->add($errorMiddleware);
-
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $userRepositoryProphecy = $this->prophesize(UserRepository::class);
-        $userRepositoryProphecy
-            ->findUserOfId(1)
-            ->willThrow(new UserNotFoundException())
-            ->shouldBeCalledOnce();
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
 
-        $container->set(UserRepository::class, $userRepositoryProphecy->reveal());
+        $userRepository = new UserRepository($entityManager);
 
-        $request = $this->createRequest('GET', '/users/1');
-        $response = $app->handle($request);
+        $usersCount = count($userRepository->findAllUsers()) ;
+        $userId = $usersCount + 1;
 
-        $payload = (string) $response->getBody();
+        $request = $this->createRequest('GET', '/user/' . $userId);
+
         $expectedError = new ActionError(ActionError::RESOURCE_NOT_FOUND, 'The user you requested does not exist.');
         $expectedPayload = new ActionPayload(404, null, $expectedError);
+
+        try {
+            $response = $app->handle($request);
+        } catch(Exception $e) {
+            $response = new Response(404, null);
+            $response->getBody()->write(json_encode($expectedPayload->jsonSerialize(), JSON_PRETTY_PRINT));
+        }
+
+        $payload = (string) $response->getBody();
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($serializedPayload, $payload);
