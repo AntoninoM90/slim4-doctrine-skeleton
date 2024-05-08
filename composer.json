@@ -10,7 +10,7 @@
         "psr7"
     ],
     "homepage": "http://github.com/AntoninoM90/slim4-doctrine-skeleton",
-    "type": "library",
+    "type": "template",
     "license": "MIT",
     "authors": [
         {
