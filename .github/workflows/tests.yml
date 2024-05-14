@@ -1,6 +1,10 @@
 name: Tests
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
 
 jobs:
     tests:
@@ -26,6 +30,9 @@ jobs:
                   php-version: ${{ matrix.php }}
                   coverage: xdebug
 
+            - name: Validate composer.json
+              run: composer validate --strict --no-check-lock
+
             - name: Install dependencies with Composer
               uses: ramsey/composer-install@v2
 
@@ -45,10 +52,10 @@ jobs:
             - name: Tests
               run: vendor/bin/phpunit --coverage-clover clover.xml
 
-            - name: Upload coverage results to Coveralls
-              if: matrix.analysis
-              env:
-                  COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  composer require php-coveralls/php-coveralls -n -W
-                  vendor/bin/php-coveralls --coverage_clover=clover.xml -v
+            # - name: Upload coverage results to Coveralls
+            #   if: matrix.analysis
+            #   env:
+            #       COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #   run: |
+            #       composer require php-coveralls/php-coveralls -n -W
+            #       vendor/bin/php-coveralls --coverage_clover=clover.xml -v
