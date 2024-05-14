@@ -27,11 +27,11 @@ class ShutdownHandler
         bool             $logError,
         bool             $logErrorDetails
     ) {
-        $this->request             = $request;
-        $this->errorHandler        = $errorHandler;
+        $this->request = $request;
+        $this->errorHandler = $errorHandler;
         $this->displayErrorDetails = $displayErrorDetails;
-        $this->logError            = $logError;
-        $this->logErrorDetails     = $logErrorDetails;
+        $this->logError = $logError;
+        $this->logErrorDetails = $logErrorDetails;
     }
 
     public function __invoke()
