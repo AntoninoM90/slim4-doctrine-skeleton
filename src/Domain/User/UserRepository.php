@@ -17,7 +17,7 @@ class UserRepository
         EntityManagerInterface $entityManager
     ) {
         $this->entityManager = $entityManager;  
-        $this->repository    = $this->entityManager->getRepository(User::class);
+        $this->repository = $this->entityManager->getRepository(User::class);
     }
 
     /**

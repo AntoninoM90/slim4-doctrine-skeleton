@@ -34,8 +34,8 @@ abstract class Action
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->container     = $container;
-        $this->logger        = $container->get(LoggerInterface::class);
+        $this->container = $container;
+        $this->logger = $container->get(LoggerInterface::class);
         $this->entityManager = $container->get(EntityManager::class);
     }
 

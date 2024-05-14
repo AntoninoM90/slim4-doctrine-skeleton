@@ -14,11 +14,11 @@ return function (ContainerBuilder $containerBuilder) {
         SettingsInterface::class => function () {
             return new Settings([
                 'displayErrorDetails' => true, // Should be set to false in production
-                'logError'            => false,
-                'logErrorDetails'     => false,
+                'logError' => false,
+                'logErrorDetails' => false,
                 'logger' => [
-                    'name'  => 'slim-app',
-                    'path'  => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+                    'name' => 'slim-app',
+                    'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
 
@@ -36,13 +36,13 @@ return function (ContainerBuilder $containerBuilder) {
 
                     'connections' => [
                         'default' => [
-                            'driver'   => 'pdo_mysql',
-                            'host'     => 'localhost',
-                            'port'     => 3306,
-                            'dbname'   => 'dbname',
-                            'user'     => 'username',
+                            'driver' => 'pdo_mysql',
+                            'host' => 'localhost',
+                            'port' => 3306,
+                            'dbname' => 'dbname',
+                            'user' => 'username',
                             'password' => 'YourSecretPassword',
-                            'charset'  => 'utf8'
+                            'charset' => 'utf8'
                         ],
                     ],
                 ],
