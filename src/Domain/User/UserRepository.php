@@ -30,6 +30,9 @@ class UserRepository
 
     /**
      * @param int $id
+     * @param int|null $lockMode
+     * @param int|null $lockVersion
+     *
      * @return User|null
      * @throws UserNotFoundException
      */
@@ -42,7 +45,11 @@ class UserRepository
     }
 
     /**
-     * @param int $id
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param mixed $limit
+     * @param mixed $offset
+     *
      * @return User[]
      * @throws UserNotFoundException
      */
@@ -56,7 +63,11 @@ class UserRepository
     }
 
     /**
-     * @param int $id
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param mixed $limit
+     * @param mixed $offset
+     *
      * @return User|null
      * @throws UserNotFoundException
      */
