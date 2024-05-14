@@ -27,7 +27,7 @@ use Psr\Log\LoggerInterface;
  * @return void
  */
 return function (
-    ContainerBuilder $containerBuilder,
+    ContainerBuilder $containerBuilder
 ) {
     $containerBuilder->addDefinitions([
         // Logger
