@@ -37,6 +37,11 @@ jobs:
               if: matrix.analysis
               run: vendor/bin/phpstan
 
+            - name: Doctrine database
+              run:  |
+                ./vendor/bin/doctrine orm:schema-tool:update --dump-sql
+                ./vendor/bin/doctrine orm:schema-tool:update --force
+
             - name: Tests
               run: vendor/bin/phpunit --coverage-clover clover.xml
 

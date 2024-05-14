@@ -36,12 +36,8 @@ return function (ContainerBuilder $containerBuilder) {
 
                     'connections' => [
                         'default' => [
-                            'driver' => 'pdo_mysql',
-                            'host' => 'localhost',
-                            'port' => 3306,
-                            'dbname' => 'dbname',
-                            'user' => 'username',
-                            'password' => 'YourSecretPassword',
+                            'driver' => 'pdo_sqlite',
+                            'path' => __DIR__ . '/../var/data.db',
                             'charset' => 'utf8'
                         ],
                     ],

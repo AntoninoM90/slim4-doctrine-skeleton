@@ -25,3 +25,4 @@ composer.lock
 
 # Doctrine
 var/doctrine/*
+var/data.db
