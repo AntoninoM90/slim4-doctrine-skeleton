@@ -34,7 +34,7 @@ class ViewUserActionTest extends TestCase
             $response = $app->handle($request);
 
             $expectedPayload = new ActionPayload(200, $user);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             if ($e->getCode() === 404) {
                 $type = ActionError::RESOURCE_NOT_FOUND;
             } else {
@@ -76,7 +76,7 @@ class ViewUserActionTest extends TestCase
 
         try {
             $response = $app->handle($request);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $response = new Response(404, null);
             $response->getBody()->write(json_encode($expectedPayload->jsonSerialize(), JSON_PRETTY_PRINT));
         }

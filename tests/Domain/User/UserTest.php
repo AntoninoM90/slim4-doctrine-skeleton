@@ -38,7 +38,7 @@ class UserTest extends TestCase
                 'lastName' => $user->getLastName(),
             ]);
 
-        $this->assertEquals($expectedPayload, json_encode($user));
+            $this->assertEquals($expectedPayload, json_encode($user));
         } else {
             $this->assertEquals(null, null);
         }

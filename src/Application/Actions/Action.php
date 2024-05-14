@@ -29,7 +29,7 @@ abstract class Action
 
     /**
      * The constructor.
-     * 
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)

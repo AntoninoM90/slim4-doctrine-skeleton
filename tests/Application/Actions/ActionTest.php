@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class ActionTest extends TestCase
 {
-
     public function testActionSetsHttpCodeInRespond()
     {
         $app = $this->getAppInstance();

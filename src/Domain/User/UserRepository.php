@@ -16,14 +16,15 @@ class UserRepository
     public function __construct(
         EntityManagerInterface $entityManager
     ) {
-        $this->entityManager = $entityManager;  
+        $this->entityManager = $entityManager;
         $this->repository = $this->entityManager->getRepository(User::class);
     }
 
     /**
      * @return User[]
      */
-    public function findAllUsers(): array {
+    public function findAllUsers(): array
+    {
         return $this->repository->findAll();
     }
 

@@ -31,7 +31,7 @@ return function (
 ) {
     $containerBuilder->addDefinitions([
         // Logger
-        LoggerInterface::class => function (ContainerInterface $c) : LoggerInterface {
+        LoggerInterface::class => function (ContainerInterface $c): LoggerInterface {
             $settings = $c->get(SettingsInterface::class);
 
             // Get Logger settings
@@ -53,7 +53,7 @@ return function (
         },
 
         // Doctrine Entity Manager
-        EntityManager::class => function (ContainerInterface $container) : EntityManager {
+        EntityManager::class => function (ContainerInterface $container): EntityManager {
             /** @var SettingsInterface $settings */
             $settings = $container->get(SettingsInterface::class);
 

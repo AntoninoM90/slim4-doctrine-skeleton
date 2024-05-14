@@ -17,7 +17,7 @@ use JsonSerializable;
  */
 class User implements JsonSerializable
 {
-    /** 
+    /**
      * @Id
      * @Column(name="id", type="integer", unique="true", nullable="true")
      * @GeneratedValue("IDENTITY")
@@ -54,7 +54,7 @@ class User implements JsonSerializable
 
     public function setUsername(
         string $username
-    ) : self {
+    ): self {
         $this->username = $username;
 
         return $this;
@@ -67,7 +67,7 @@ class User implements JsonSerializable
 
     public function setFirstName(
         string $firstName
-    ) : self {
+    ): self {
         $this->firstName = $firstName;
 
         return $this;
@@ -80,7 +80,7 @@ class User implements JsonSerializable
 
     public function setLastName(
         string $lastName
-    ) : self {
+    ): self {
         $this->lastName = $lastName;
 
         return $this;

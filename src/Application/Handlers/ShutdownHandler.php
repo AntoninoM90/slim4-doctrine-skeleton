@@ -21,11 +21,11 @@ class ShutdownHandler
     private bool $logErrorDetails;
 
     public function __construct(
-        Request          $request,
+        Request $request,
         HttpErrorHandler $errorHandler,
-        bool             $displayErrorDetails,
-        bool             $logError,
-        bool             $logErrorDetails
+        bool $displayErrorDetails,
+        bool $logError,
+        bool $logErrorDetails
     ) {
         $this->request = $request;
         $this->errorHandler = $errorHandler;
