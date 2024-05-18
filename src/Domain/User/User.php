@@ -22,7 +22,7 @@ class User implements JsonSerializable
      * @Column(name="id", type="integer", unique="true", nullable="true")
      * @GeneratedValue("IDENTITY")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @Column(name="username", type="string", length="40", unique=true, nullable=false)
