@@ -33,7 +33,7 @@
         "ext-json": "*",
         "doctrine/annotations": "1.*",
         "doctrine/doctrine-bundle": "^2.12",
-        "doctrine/cache": "^1.12.1",
+        "doctrine/cache": "^2.2.0",
         "doctrine/orm": "^2",
         "monolog/monolog": "^2.9",
         "php-di/php-di": "^6.4",
