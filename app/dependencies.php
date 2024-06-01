@@ -7,17 +7,14 @@ use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
-use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\DBAL\Types\Type;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
 /**
  * Set dependencies of the application.
@@ -74,11 +71,27 @@ return function (
                 )
             );
 
-            // Set the cache driver
-            $config->setMetadataCacheImpl(
-                new FilesystemCache(
-                    $doctrineSettings['cache_dir']
-                )
+            // Set metadata cache
+            if ($doctrineSettings['dev_mode']) {
+                $metadataCache = new ArrayAdapter();
+            } else {
+                $metadataCache = new PhpFilesAdapter('doctrine_metadata');
+            }
+
+            $config->setMetadataCache(
+                $metadataCache
+            );
+
+            // Set query cache
+            $queryCache = new PhpFilesAdapter('doctrine_queries');
+            $config->setQueryCache(
+                $queryCache
+            );
+
+            // Set result cache
+            $resultCache = new PhpFilesAdapter('doctrine_cache');
+            $config->setResultCache(
+                $resultCache
             );
 
             // Create a new entity manager
