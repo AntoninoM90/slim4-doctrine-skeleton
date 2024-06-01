@@ -31,7 +31,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
-        "doctrine/annotations": "1.*",
+        "doctrine/annotations": "2.*",
         "doctrine/cache": "^2.2.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^2",
