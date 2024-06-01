@@ -61,13 +61,16 @@ return function (
             $config = Setup::createAnnotationMetadataConfiguration(
                 $doctrineSettings['metadata_dirs'],
                 $doctrineSettings['dev_mode'],
+                null,
+                null,
+                false
             );
 
             // Set the metadata driver
             $config->setMetadataDriverImpl(
                 new AnnotationDriver(
                     new AnnotationReader,
-                    $doctrineSettings['metadata_dirs']
+                    $doctrineSettings['metadata_dirs'],
                 )
             );
 
