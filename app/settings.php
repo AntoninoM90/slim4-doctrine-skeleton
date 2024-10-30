@@ -30,6 +30,8 @@ return function (ContainerBuilder $containerBuilder) {
                     // you should add any other path containing annotated entity classes
                     'metadata_dirs' => [__DIR__ . '/../src/Domain'],
 
+                    'proxy_dir' => __DIR__ . '/../var/proxy',
+
                     'connections' => [
                         'default' => [
                             'driver' => 'pdo_sqlite',

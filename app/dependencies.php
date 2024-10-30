@@ -61,7 +61,7 @@ return function (
             $config = Setup::createAnnotationMetadataConfiguration(
                 $doctrineSettings['metadata_dirs'],
                 $doctrineSettings['dev_mode'],
-                null,
+                $doctrineSettings['proxy_dir'],
                 null,
                 false
             );
@@ -74,25 +74,28 @@ return function (
                 )
             );
 
-            // Set metadata cache
+            // Set cache
             if ($doctrineSettings['dev_mode']) {
                 $metadataCache = new ArrayAdapter();
+                $queryCache = new ArrayAdapter();
+                $resultCache = new ArrayAdapter();
             } else {
                 $metadataCache = new PhpFilesAdapter('doctrine_metadata');
+                $queryCache = new PhpFilesAdapter('doctrine_queries');
+                $resultCache = new PhpFilesAdapter('doctrine_cache');
             }
 
+            // Set metadata cache
             $config->setMetadataCache(
                 $metadataCache
             );
 
             // Set query cache
-            $queryCache = new PhpFilesAdapter('doctrine_queries');
             $config->setQueryCache(
                 $queryCache
             );
 
             // Set result cache
-            $resultCache = new PhpFilesAdapter('doctrine_cache');
             $config->setResultCache(
                 $resultCache
             );
