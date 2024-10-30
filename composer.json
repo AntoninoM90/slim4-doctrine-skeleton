@@ -35,10 +35,11 @@
         "doctrine/cache": "^2.2.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/orm": "^2",
-        "monolog/monolog": "^2.9",
+        "monolog/monolog": "^2.9|^3.7",
         "php-di/php-di": "^6.4"|^7.0",
-        "slim/psr7": "^1.6",
-        "slim/slim": "^4.13"
+        "php-di/php-di": "^6.4",
+        "slim/psr7": "^1.6|^1.7",
+        "slim/slim": "^4.14"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.2",
